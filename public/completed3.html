@@ -1,303 +1,359 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width">
-  <title>replit</title>
-
+  <meta charset="UTF-8" />
+  <title>Gallery App</title>
   <style>
-  * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
-    body{
-      display: flex;
-      padding: 0;
+    body {
+      font-family: Arial, sans-serif;
       margin: 0;
-      background-color: gainsboro;
+      padding: 0;
+      background-color: #f0f0f0;
+      display: flex;
       flex-direction: column;
       gap: 10px;
     }
 
     nav {
-      padding: 10px;
+      background-color: #007BFF;
       color: white;
-      font-size: 25px;
+      padding: 15px;
+      font-size: 22px;
       font-weight: bold;
-      font-family: monospace;
-      background-color: blue;
-      display: flex;
-      flex-grow: 1;
-      box-shadow: 0px 10px 5px 0px rgba(0,0,0,0.31);
     }
 
-    thead{
-      border-bottom: 1px solid black;
-    }
-
-    main{
-      margin-right: auto;
-      margin-left: auto;
-      width: 95vw;
+    main {
+      width: 90%;
+      margin: 0 auto;
       display: flex;
-      flex-grow: 10;
       flex-direction: column;
-      gap: 5px;
+      gap: 10px;
     }
 
-    section{
-      display: flex;
-      align-items: center;
-      justify-content: space-evenly;      
-    }
-
-
-    .card{
-      border-radius: 2px;
+    .card {
       background-color: white;
-      font-size: 0.7em;
-      padding: 8px;
-      box-shadow: -11px 9px 5px -4px rgba(0,0,0,0.31);
-      border: 1px solid gainsboro;
-    }
-
-    button{
-      border: 1px solid grey;
-      padding: 5px;
       border-radius: 5px;
+      padding: 10px;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
     }
 
-
-
-    tr:nth-child(even){background-color: #f2f2f2;}
-
-    button:hover{
-       background-color: white;
-    }
-
-    article{
+    section {
       display: flex;
-      flex-direction: row;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
     }
-    
-    aside{
-      display: flex;
-      flex-grow: 2;
-      background-color: white;
-      flex-direction: column;
-    }
-    
-    .scrollable{
-      display:flex;
-      flex-grow: 4;
-      max-height: 80vh;
-      overflow-y:scroll;
-    }
-    
-    table{
-      border-collapse: collapse;
-      width: 100%;
-    }
-  
-    thead, th{
-      background-color: blue;
+
+    button {
+      padding: 8px 16px;
+      background-color: #007BFF;
       color: white;
-      font-weight: bold;
-      font-size: 1.5em;
-    }
-  
-    td {
-      font-size: 1.5em;
-      text-align: center;
-    }
-  
-    tr:hover {
-      background-color: #ddd;
-    }
-  
-    img{
-      height: 100px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
     }
 
-    thead button {
-      height: 20px;
-      font-size: 10px;
-      font-weight: bold;
+    button:hover { background-color: #0056b3; }
+
+    /* Gallery grid layout */
+    #gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 15px;
     }
 
+    .item-card {
+      background-color: white;
+      border-radius: 5px;
+      padding: 15px;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .item-card h3 {
+      margin: 0 0 8px 0;
+      color: #007BFF;
+      font-size: 16px;
+    }
+
+    .item-card p {
+      margin: 4px 0;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .item-card .badge {
+      font-size: 12px;
+      background-color: #e0f0ff;
+      color: #007BFF;
+      padding: 2px 8px;
+      border-radius: 10px;
+      display: inline-block;
+      margin-top: 6px;
+    }
   </style>
-  
 </head>
-
 <body>
-  <nav>
-    Amiibo App
-  </nav>
 
-<main>
-  
-  <section class="card">
-    <button onclick="filterBySeries('Animal Crossing')">
-      Animal Crossing
-    </button>
+  <nav>Gallery App</nav>
 
-    <button onclick="filterBySeries('Breath of the Wild')">
-      Breath of the Wild
-    </button>
+  <main>
 
-    <button onclick="filterBySeries('Super Mario')">
-      Super Mario
-    </button>
+    <section class="card">
+      <button onclick="sortByName()">Sort by Name</button>
+      <button onclick="sortByDate()">Sort by Date</button>
+      <button onclick="resetData()">Reset</button>
+    </section>
 
-    <input type="search" id="searchKey" placeholder="search name">
-    <button onclick=search()>Search</button>
-
-  </section>
-
-  <article>
-    <div class="scrollable">
-       <table class="card">
-         <thead>
-            <tr>
-             <th>Name <button onclick="sortByName()">Sort</button> </th>
-             <th>Series</th>
-             <th>Image</th>
-             <th>Release</th>
-             <th>Action</th>
-           </tr>
-         </thead>
-         <tbody id="result">
-         </tbody>
-       </table>
+    <!-- Render target — JS fills this with cards -->
+    <div id="gallery">
+      <p>Loading...</p>
     </div>
-    
-    <aside>
-      <h1>Supported Games For <span id="character"></span></h1>
-      <ul id="games"></ul>
-    </aside>
-  </article>
-  
-</main>
 
+  </main>
 
   <script>
 
     let state = [];
 
-    function drawTable(records){
-      let html='';
-      let result = document.querySelector('#result');
-      
-      for(let rec of records){
-        html+=`<tr>
-         <td>${rec.character}</td>
-         <td>${rec.gameSeries}</td>
-         <td>
-           <img src="${rec.image}">
-         </td>
-         <td>
-           ${rec.release.na}
-         </td>
-         <td>
-           <button onclick="viewDetails('${rec.head}', '${rec.tail}')">View Details</button>
-         </td>
-       </tr>`;
-       
-      }
-    
-      result.innerHTML = html;
-    
-    }
-
-    async function getData(){
-      const response = await fetch('https://amiiboapi.com/api/amiibo/?showusage');
+    /* STEP 1 — Fetch data from the API */
+    async function getData() {
+      const response = await fetch('YOUR_API_URL_HERE');
       const data = await response.json();
-      return data.amiibo.slice(0, 100);//gets first 100 items (too much data)
+      state = data;
+      drawGallery(state);
     }
 
-    async function showAllGames(){
-        state = await getData();
-        drawTable(state);
-    }
-
-    function filterBySeries(series){
-    
-      let filtered = [];
-      
-      for(let rec of state){
-        if (rec.gameSeries === series)
-          filtered.push(rec);
-      }
-      
-      drawTable(filtered);
-    
-    }
-
-    function search(){
-      //get the search term from the input field
-      let searchKey = document.querySelector('#searchKey').value;
-      
-      let results = [];
-    
-      //iterate all the records in the global state
-      for(let rec of state){
-    
-        //capitalize the search term and text to be case insensitive
-        let searchText = rec.character.toUpperCase();
-        searchKey = searchKey.toUpperCase();
-    
-        //add to resulting array if search term is in the text
-        if ( searchText.search(searchKey) !== -1 ){
-          results.push(rec);
-        }
-    
-        //draw table with the search results
-        drawTable(results);
-      
-      }
-    }
-
-    //retrieves a record from state using the head and tail
-    function getRecord(head, tail){
-      for(let rec of state){
-        if (rec.head === head && rec.tail === tail){
-          return rec;
-        }
-      }
-    }
-
-    //shows the character name and related games on the screen
-    function viewDetails(head, tail){
-
-      let record = getRecord(head, tail);
-
-      let character = document.querySelector('#character');
-      let result = document.querySelector('#games');
-
+    /* STEP 2 — Build and display the cards
+       Replace FIELD1, FIELD2, FIELD3 with the
+       actual field names from your API data     */
+    function drawGallery(records) {
+      let gallery = document.getElementById('gallery');
       let html = '';
 
-      for(let game of record.gamesSwitch){
-        html+=`<li>${game.gameName}</li>`;
+      for (let rec of records) {
+        html += `
+          <div class="item-card">
+            <h3>${rec.FIELD1}</h3>
+            <p><strong>Label 1:</strong> ${rec.FIELD2}</p>
+            <p><strong>Label 2:</strong> ${rec.FIELD3}</p>
+            <span class="badge">${rec.FIELD4}</span>
+          </div>
+        `;
       }
-      
-      character.innerHTML = record.character;
-      result.innerHTML = html;
+
+      gallery.innerHTML = html;
     }
 
-    //compares the character fields of the items in the array
-    function nameCompare(a, b){
-      return a.character.localeCompare(b.character);
-    }
-    
-    function sortByName(){
-      let result = state.sort(nameCompare);
-      drawTable(result);
+    /* STEP 3 — Sort by name alphabetically
+       Replace FIELD1 with the name field of your API */
+    function sortByName() {
+      let sorted = [...state].sort(function(a, b) {
+        return a.FIELD1.localeCompare(b.FIELD1);
+      });
+      drawGallery(sorted);
     }
 
-    showAllGames();    
-    
+    /* STEP 4 — Sort by date
+       Replace FIELD2 with the date field of your API */
+    function sortByDate() {
+      let sorted = [...state].sort(function(a, b) {
+        return new Date(a.FIELD2) - new Date(b.FIELD2);
+      });
+      drawGallery(sorted);
+    }
+
+    /* STEP 5 — Reset back to original order */
+    function resetData() {
+      drawGallery(state);
+    }
+
+    getData();
+
   </script>
-</body>
 
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Table App</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    nav {
+      background-color: #007BFF;
+      color: white;
+      padding: 15px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    main {
+      width: 90%;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 5px;
+      padding: 10px;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    }
+
+    section {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 8px 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button:hover { background-color: #0056b3; }
+
+    /* Table layout */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px 12px;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    thead th {
+      background-color: #007BFF;
+      color: white;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) { background-color: #f2f2f2; }
+
+    tr:hover { background-color: #ddd; }
+  </style>
+</head>
+<body>
+
+  <nav>Table App</nav>
+
+  <main>
+
+    <section class="card">
+      <button onclick="sortByName()">Sort by Name</button>
+      <button onclick="sortByDate()">Sort by Date</button>
+      <button onclick="resetData()">Reset</button>
+    </section>
+
+    <!-- Table structure — tbody is the render target -->
+    <table class="card">
+      <thead>
+        <tr>
+          <!-- Replace these with your actual column names -->
+          <th>Column 1</th>
+          <th>Column 2</th>
+          <th>Column 3</th>
+          <th>Column 4</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <!-- JS fills this with rows -->
+      </tbody>
+    </table>
+
+  </main>
+
+  <script>
+
+    let state = [];
+
+    /* STEP 1 — Fetch data from the API */
+    async function getData() {
+      const response = await fetch('YOUR_API_URL_HERE');
+      const data = await response.json();
+      state = data;
+      drawTable(state);
+    }
+
+    /* STEP 2 — Build and display the rows
+       Replace FIELD1, FIELD2, FIELD3, FIELD4 with
+       the actual field names from your API data    */
+    function drawTable(records) {
+      let tbody = document.getElementById('table-body');
+      let html = '';
+
+      for (let rec of records) {
+        html += `
+          <tr>
+            <td>${rec.FIELD1}</td>
+            <td>${rec.FIELD2}</td>
+            <td>${rec.FIELD3}</td>
+            <td>${rec.FIELD4}</td>
+          </tr>
+        `;
+      }
+
+      tbody.innerHTML = html;
+    }
+
+    /* STEP 3 — Sort by name alphabetically
+       Replace FIELD1 with the name field of your API */
+    function sortByName() {
+      let sorted = [...state].sort(function(a, b) {
+        return a.FIELD1.localeCompare(b.FIELD1);
+      });
+      drawTable(sorted);
+    }
+
+    /* STEP 4 — Sort by date
+       Replace FIELD2 with the date field of your API */
+    function sortByDate() {
+      let sorted = [...state].sort(function(a, b) {
+        return new Date(a.FIELD2) - new Date(b.FIELD2);
+      });
+      drawTable(sorted);
+    }
+
+    /* STEP 5 — Reset back to original order */
+    function resetData() {
+      drawTable(state);
+    }
+
+    getData();
+
+  </script>
+
+</body>
 </html>
